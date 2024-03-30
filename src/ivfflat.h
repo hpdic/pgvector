@@ -88,7 +88,7 @@ typedef struct VectorArrayData
 	Vector	   *items;
 }			VectorArrayData;
 
-typedef VectorArrayData * VectorArray;
+typedef VectorArrayData *VectorArray;
 
 typedef struct ListInfo
 {
