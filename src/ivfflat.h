@@ -205,7 +205,7 @@ typedef struct IvfflatMetaPageData
 	uint16		lists;
 }			IvfflatMetaPageData;
 
-typedef IvfflatMetaPageData * IvfflatMetaPage;
+typedef IvfflatMetaPageData *IvfflatMetaPage;
 
 typedef struct IvfflatPageOpaqueData
 {
@@ -214,7 +214,7 @@ typedef struct IvfflatPageOpaqueData
 	uint16		page_id;		/* for identification of IVFFlat indexes */
 }			IvfflatPageOpaqueData;
 
-typedef IvfflatPageOpaqueData * IvfflatPageOpaque;
+typedef IvfflatPageOpaqueData *IvfflatPageOpaque;
 
 typedef struct IvfflatListData
 {
@@ -223,7 +223,7 @@ typedef struct IvfflatListData
 	Vector		center;
 }			IvfflatListData;
 
-typedef IvfflatListData * IvfflatList;
+typedef IvfflatListData *IvfflatList;
 
 typedef struct IvfflatScanList
 {
