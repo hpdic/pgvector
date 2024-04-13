@@ -1106,6 +1106,8 @@ vector_combine(PG_FUNCTION_ARGS)
 		dim = STATE_DIMS(statearray1);
 		CheckExpectedDim(dim, STATE_DIMS(statearray2));
 		statedatums = CreateStateDatums(dim);
+		// DFZ: Isn't the following simply "vector addition" 
+		//      respecting dim(array1)? How is this "vector combine"?
 		for (int i = 1; i <= dim; i++)
 		{
 			double		v = statevalues1[i] + statevalues2[i];
