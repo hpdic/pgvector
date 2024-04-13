@@ -167,6 +167,8 @@ float_underflow_error(void)
 
 /*
  * Convert textual representation to internal representation
+
+ DFZ TODO: This function is overly long; should refactor into smaller ones
  */
 PGDLLEXPORT PG_FUNCTION_INFO_V1(vector_in);
 Datum
