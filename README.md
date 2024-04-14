@@ -1,3 +1,13 @@
+# HPDIC MOD
+
+## Quick Start
+```sh
+psql test
+select * from items;
+SELECT embedding <-> '[3,1,2]' AS distance FROM items;
+SELECT 1 - (embedding <=> '[3,1,2]') AS cosine_similarity FROM items;
+```
+
 # pgvector
 
 Open-source vector similarity search for Postgres
