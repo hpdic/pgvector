@@ -731,7 +731,7 @@ l1_distance(PG_FUNCTION_ARGS)
 }
 
 /*
- * DFZ: Get the Linf distance between two vectors
+ * DFZ: Get the L_inf distance between two vectors
  */
 PGDLLEXPORT PG_FUNCTION_INFO_V1(linf_distance);
 Datum linf_distance(PG_FUNCTION_ARGS)

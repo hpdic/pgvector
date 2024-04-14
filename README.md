@@ -3,9 +3,15 @@
 ## Quick Start
 ```sh
 psql test
+create extension vector;
+drop table if exists items;
+CREATE TABLE items (id bigserial PRIMARY KEY, embedding vector(3));
+INSERT INTO items (embedding) VALUES ('[1,2,3]'), ('[4,5,6]');
 select * from items;
 SELECT embedding <-> '[3,1,2]' AS distance FROM items;
-SELECT 1 - (embedding <=> '[3,1,2]') AS cosine_similarity FROM items;
+
+-- HPDIC now presents the L_inf form for vector similarity:
+SELECT embedding <|> '[3,1,2]' AS Linf FROM items;
 ```
 
 # pgvector
