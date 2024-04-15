@@ -730,6 +730,33 @@ l1_distance(PG_FUNCTION_ARGS)
 	PG_RETURN_FLOAT8((double) distance);
 }
 
+/**
+ * DFZ: n-vector-1-feature distance using centroid
+*/
+PGDLLEXPORT PG_FUNCTION_INFO_V1(n1_centroid_distance);
+Datum n1_centroid_distance(PG_FUNCTION_ARGS)
+{
+	Vector *a = PG_GETARG_VECTOR_P(0);
+	Vector *b = PG_GETARG_VECTOR_P(1);
+	float *ax = a->x;
+	float *bx = b->x;
+	float distance = 0.0;
+
+	// TODO: Need to work around this dim check: "a" would 
+	// TODO: comprise multiple vectors
+	CheckDims(a, b);
+
+	/* Auto-vectorized */
+	for (int i = 0; i < a->dim; i++)
+	{
+		float dist = fabsf(ax[i] - bx[i]);
+		if (dist > distance)
+			distance = dist;
+	}
+
+	PG_RETURN_FLOAT8((double)distance);
+}
+
 /*
  * DFZ: Get the L_inf distance between two vectors
  */
