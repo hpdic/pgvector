@@ -37,6 +37,9 @@ CREATE FUNCTION l2_distance(vector, vector) RETURNS float8
 CREATE FUNCTION linf_distance(vector, vector) RETURNS float8
 	AS 'MODULE_PATHNAME' LANGUAGE C IMMUTABLE STRICT PARALLEL SAFE;
 
+CREATE FUNCTION n1_centroid_distance(vector, vector) RETURNS float8
+	AS 'MODULE_PATHNAME' LANGUAGE C IMMUTABLE STRICT PARALLEL SAFE;
+
 CREATE FUNCTION inner_product(vector, vector) RETURNS float8
 	AS 'MODULE_PATHNAME' LANGUAGE C IMMUTABLE STRICT PARALLEL SAFE;
 
@@ -172,6 +175,11 @@ CREATE OPERATOR <|> (
 	COMMUTATOR = '<|>'
 );
 
+CREATE OPERATOR <+> (
+	LEFTARG = vector, RIGHTARG = vector, PROCEDURE = n1_centroid_distance,
+	COMMUTATOR = '<+>'
+);
+
 CREATE OPERATOR <#> (
 	LEFTARG = vector, RIGHTARG = vector, PROCEDURE = vector_negative_inner_product,
 	COMMUTATOR = '<#>'
@@ -272,6 +280,11 @@ CREATE OPERATOR CLASS vector_linf_ops
 	FOR TYPE vector USING ivfflat AS
 	OPERATOR 1 <|> (vector, vector) FOR ORDER BY float_ops,
 	FUNCTION 1 linf_distance(vector, vector);	
+
+CREATE OPERATOR CLASS vector_n1_centroid_ops
+	FOR TYPE vector USING ivfflat AS
+	OPERATOR 1 <+> (vector, vector) FOR ORDER BY float_ops,
+	FUNCTION 1 n1_centroid_distance(vector, vector);		
 
 CREATE OPERATOR CLASS vector_ip_ops
 	FOR TYPE vector USING ivfflat AS

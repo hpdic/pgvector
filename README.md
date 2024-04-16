@@ -1,8 +1,17 @@
 # HPDIC MOD
 
 ## Quick Start
+
+In terminal:
 ```sh
+# cd path-to-pgvector
+make; sudo make install;
 psql test
+```
+
+In PSQL (for the first time):
+```sh
+drop extension if exists vector cascade;
 create extension vector;
 drop table if exists items;
 CREATE TABLE items (id bigserial PRIMARY KEY, embedding vector(3));
@@ -12,6 +21,18 @@ SELECT embedding <-> '[3,1,2]' AS distance FROM items;
 
 -- HPDIC now presents the L_inf form for vector similarity:
 SELECT embedding <|> '[3,1,2]' AS Linf FROM items;
+
+-- HPDIC also presents n-vector-1-feature similarity:
+SELECT embedding <+> '[3,1,2,3,1,2,3,1,2,3,1,2]' AS n1_centroid FROM items;
+-- The above query assumes the input query consists of four 3-dimensional vectors, all of which are [3,1,2]
+-- For now, the distance is simply the L2 distance between the centroid of vectors and the database vector
+```
+
+If you only want to test the new PGVector change, simply restart PSQL:
+```sh
+\q
+psql test
+SELECT embedding <+> '[3,1,2,3,1,2,3,1,2,3,1,2]' AS n1_centroid FROM items;
 ```
 
 # pgvector

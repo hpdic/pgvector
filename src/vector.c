@@ -732,29 +732,44 @@ l1_distance(PG_FUNCTION_ARGS)
 
 /**
  * DFZ: n-vector-1-feature distance using centroid
-*/
+ */
 PGDLLEXPORT PG_FUNCTION_INFO_V1(n1_centroid_distance);
 Datum n1_centroid_distance(PG_FUNCTION_ARGS)
 {
 	Vector *a = PG_GETARG_VECTOR_P(0);
 	Vector *b = PG_GETARG_VECTOR_P(1);
 	float *ax = a->x;
-	float *bx = b->x;
+	// float *bx = b->x;
 	float distance = 0.0;
+	float diff;
 
-	// TODO: Need to work around this dim check: "a" would 
-	// TODO: comprise multiple vectors
-	CheckDims(a, b);
+	// CheckDims(a, b);
+
+	// DFZ: b is now a multi-vector
+	int n_vector_b = b->dim / a->dim; // # of vectors in b
+
+	// DFZ: Reuse a as a place holder
+	Vector *b_centroid = PG_GETARG_VECTOR_P(0); 
+
+	// DFZ: Calculate the centroid
+	for (int i = 0; i < b_centroid->dim; i++)
+	{
+		b_centroid->x[i] = 0;
+		for (int j = 0; j < n_vector_b; j++)
+		{
+			b_centroid->x[i] += b->x[i + j * b_centroid->dim];
+		}
+		b_centroid->x[i] /= n_vector_b;
+	}
 
 	/* Auto-vectorized */
 	for (int i = 0; i < a->dim; i++)
 	{
-		float dist = fabsf(ax[i] - bx[i]);
-		if (dist > distance)
-			distance = dist;
+		diff = ax[i] - b_centroid->x[i];
+		distance += diff * diff;
 	}
 
-	PG_RETURN_FLOAT8((double)distance);
+	PG_RETURN_FLOAT8(sqrt((double)distance));
 }
 
 /*
