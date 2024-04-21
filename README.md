@@ -26,6 +26,9 @@ SELECT embedding <|> '[3,1,2]' AS Linf FROM items;
 SELECT embedding <+> '[3,1,2,3,1,2,3,1,2,3,1,2]' AS n1_centroid FROM items;
 -- The above query assumes the input query consists of four 3-dimensional vectors, all of which are [3,1,2]
 -- For now, the distance is simply the L2 distance between the centroid of vectors and the database vector
+
+-- Order by the new metric:
+SELECT * FROM items ORDER BY embedding <+> '[3,1,2,5,5,8]' LIMIT 5;
 ```
 
 If you only want to test the new PGVector change, simply restart PSQL:
